@@ -97,8 +97,26 @@ def secante(f, x0, x1, a_tol, n_max):
 
     #Si todavia no salio es que no hubo convergencia:
     raise ValueError('No hubo convergencia')
-    return x. delta, i+1
+    return x, delta, i+1
 
+def newton_raphson(f, df, a, b, a_tol, n_max):
+
+    delta = 0
+    x = a+(b-a)/2
+
+    #Aca nose si hay que hacer biseccion antes de newton raphson
+
+    for i in range(n_max):
+        x_old = x
+        x = x_old - f(x_old)/df(x_old)
+        delta =np.abs(x - x_old)
+
+        if delta <= a_tol:
+            print('Hubo convergencia, n_iter = ' + str(i+1))
+            return x, delta, i+1
+
+    raise ValueError('No hubo convergencia')
+    return x, delta, i+1
 #Intervalo para buscar raiz
 a = 0.0
 b = 2.0
@@ -167,5 +185,4 @@ r, results = brentq(f1, a, b, full_output=True)
 print('raiz = ' +str(r))
 print('Resultados: ')
 print(results)
-
 
