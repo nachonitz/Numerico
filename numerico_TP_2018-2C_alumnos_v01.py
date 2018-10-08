@@ -104,12 +104,24 @@ def newton_raphson(f, df, a, b, a_tol, n_max):
     delta = 0
     x = a+(b-a)/2
 
-    #Aca nose si hay que hacer biseccion antes de newton raphson
+    #Aca nose si hay que hacer biseccion antes de newton raphson, pero por las dudas lo hice
+    for i in range(3):
+        if f(a) * f(x) > 0:
+            a = x
+        else:
+            b = x
+        x_old = x
+        x = a+(b-a)/2
+
+    print('{0:^4} {1:^17} {2:^17} {3:^17}'.format('i', 'x', 'x_-1', 'delta'))
+    print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(0, x, 0, delta))
 
     for i in range(n_max):
         x_old = x
         x = x_old - f(x_old)/df(x_old)
         delta =np.abs(x - x_old)
+
+        print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(i+1, x, x_old, delta))
 
         if delta <= a_tol:
             print('Hubo convergencia, n_iter = ' + str(i+1))
@@ -185,4 +197,3 @@ r, results = brentq(f1, a, b, full_output=True)
 print('raiz = ' +str(r))
 print('Resultados: ')
 print(results)
-
