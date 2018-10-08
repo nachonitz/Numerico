@@ -17,6 +17,7 @@ from scipy.optimize import brentq
 import timeit #Para calcular tiempo de corrida
 import numpy as np #Manejo de arrays
 import matplotlib.pylab as plt #Rutinas gráficas
+import math
 
 #Funciones f1, f2, f3 y derivadas
 def f1(x): 
@@ -27,18 +28,19 @@ def ddf1(x):
     return 2
 
 def f2(x): 
-    return 0
+    return x**5 - 6.6*x**4 + 5.12*x**3 + 21.312*x**2 - 38.016*x + 17.28
 def df2(x): 
-    return 0
+    return 5*x**4 - 26.4*x**3 + 15.36*x**2 +42.624*x - 38.016
 def ddf2(x): 
-    return 0
+    return 20*x**3 - 79.2*x**2 + 30.72*x + 42.624
+
 
 def f3(t): 
-    return 0
+    return (t - 1.5) * math.exp(-4 * (t - 1.5)**2)
 def df3(t): 
-    return 0
+    return (-8*t + 12.0)*(t - 1.5) * math.exp(-4*(t - 1.5)**2) + math.exp(-4*(t - 1.5)**2)
 def ddf3(t): 
-    return 0
+    return (-24*t + (t - 1.5)*(8*t - 12.0)**2) * math.exp(-4* (x - 1.5)**2)
 
 #Funciones busqueda de raices
 def bisec(f, a, b, a_tol, n_max):
