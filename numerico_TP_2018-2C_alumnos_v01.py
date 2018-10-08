@@ -82,11 +82,17 @@ def secante(f, x0, x1, a_tol, n_max):
     print('{0:^4} {1:^17} {2:^17} {3:^17}'.format('i', 'x', 'x_-1', 'delta'))
     print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(0, x1, x0, delta))
 
+    f_x0 = f(x0)
+    f_x1 = f(x1)
+
     for i in range(n_max):
-        x = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+        x = x1 - f_x1*(x1-x0)/(f_x1-f_x0)
         delta = np.abs(x - x1)
         x0 = x1
         x1 = x
+
+        f_x0 = f_x1
+        f_x1 = f(x1)
         
         print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(i+1, x1, x0, delta))
         
@@ -197,3 +203,7 @@ r, results = brentq(f1, a, b, full_output=True)
 print('raiz = ' +str(r))
 print('Resultados: ')
 print(results)
+
+print(newton_raphson(f2,df2,a,b,a_tol2,n_max))
+print(bisec(f2,a,b,a_tol2,n_max))
+print(secante(f2,a,b,a_tol2,n_max))
