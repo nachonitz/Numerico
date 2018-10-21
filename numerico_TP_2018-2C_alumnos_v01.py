@@ -40,7 +40,7 @@ def f3(t):
 def df3(t): 
     return (-8*t + 12.0)*(t - 1.5) * math.exp(-4*(t - 1.5)**2) + math.exp(-4*(t - 1.5)**2)
 def ddf3(t): 
-    return (-24*t + (t - 1.5)*(8*t - 12.0)**2) * math.exp(-4* (x - 1.5)**2)
+    return (-24*t + (t - 1.5)*(8*t - 12.0)**2) * math.exp(-4* (t - 1.5)**2)
 
 #Funciones busqueda de raices
 def bisec(f, a, b, a_tol, n_max):
@@ -70,7 +70,7 @@ def bisec(f, a, b, a_tol, n_max):
             return x, delta, i+1
     
     #Si todavia no salio es que no hubo convergencia:
-    raise ValueError('No hubo convergencia')
+    print('No hubo convergencia')
     return x, delta, i+1
 
 def secante(f, x0, x1, a_tol, n_max):
@@ -102,7 +102,7 @@ def secante(f, x0, x1, a_tol, n_max):
             return x, delta, i+1
 
     #Si todavia no salio es que no hubo convergencia:
-    raise ValueError('No hubo convergencia')
+    print('No hubo convergencia')
     return x, delta, i+1
 
 def newton_raphson(f, df, a_tol, n_max):
@@ -125,7 +125,7 @@ def newton_raphson(f, df, a_tol, n_max):
             print('Hubo convergencia, n_iter = ' + str(i+1))
             return x, delta, i+1
 
-    raise ValueError('No hubo convergencia')
+    print('No hubo convergencia')
     return x, delta, i+1
 
 def newton_raphson_modificado(f, df, ddf, a_tol, n_max):
@@ -147,7 +147,7 @@ def newton_raphson_modificado(f, df, ddf, a_tol, n_max):
             print('Hubo convergencia, n_iter = ' + str(i+1))
             return x, delta, i+1
 
-    raise ValueError('No hubo convergencia')
+    print('No hubo convergencia')
     return x, delta, i+1
 
 #Intervalo para buscar raiz
@@ -174,52 +174,72 @@ plt.grid(True)
 plt.savefig(nombre + '.png')
 plt.show()
 
-print('----------------')
-print('Metodo biseccion')
-print('----------------')
-print('')
-print('Funcion f1, a_tol = '+str(a_tol1))
-r, delta, n_iter = bisec(f1, a, b, a_tol1, n_max)
-print('raiz = ' +str(r))
-print('delta= ' +str(delta))
-print('n_ite= ' +str(n_iter))
-print('')
-print('Funcion f1, a_tol = '+str(a_tol2))
-r, delta, n_iter = bisec(f1, a, b, a_tol2, n_max)
-print('raiz = ' +str(r))
-print('delta= ' +str(delta))
-print('n_ite= ' +str(n_iter))
-print('')
+funciones = ((f1,df1,ddf1),(f2,df2,ddf2),(f3,df3,ddf3))
+metodos = ("biseccion","secante","newton_raphson","newton_raphson_modificado","brent")
+tolerancias = (a_tol1,a_tol2)
+for funcion in funciones:
+    if funcion == (f1,df1,ddf1):
+        funcion_actual = "f1"
+    if funcion == (f2,df2,ddf2):
+        funcion_actual = "f2"
+    if funcion == (f3,df3,ddf3):
+        funcion_actual = "f3"
+    for metodo in metodos:
+        
+        
+            
+        if metodo != "brent":
+            print('----------------')
+            print('Metodo {}'.format(metodo))
+            print('----------------')
+            print('')
+            print('Funcion {}, a_tol = '.format(funcion_actual)+str(a_tol1))
+            if metodo == "biseccion":
+                r, delta, n_iter = bisec(funcion[0], a, b, a_tol1, n_max)
+                
+            if metodo == "secante":
+                r, delta, n_iter = secante(funcion[0], a, b, a_tol1, n_max)
+                
+            if metodo ==  "newton_raphson":
+                r, delta, n_iter = newton_raphson(funcion[0], funcion[1], a_tol1, n_max)
+                
+            if metodo == "newton_raphson_modificado":
+                r, delta, n_iter = newton_raphson_modificado(funcion[0], funcion[1], funcion[2], a_tol1, n_max)
+            print('raiz = ' +str(r))
+            print('delta= ' +str(delta))
+            print('n_ite= ' +str(n_iter))
+            print('')
+            print('Funcion {}, a_tol = '.format(funcion_actual)+str(a_tol2))
+        
+            if metodo == "biseccion":
+                metodo_actual = "biseccion"
+                r, delta, n_iter = bisec(funcion[0], a, b, a_tol2, n_max)
+                
+            if metodo == "secante":
+                r, delta, n_iter = secante(funcion[0], a, b, a_tol2, n_max)
+                
+            if metodo ==  "newton_raphson":
+                r, delta, n_iter = newton_raphson(funcion[0], funcion[1], a_tol2, n_max)
+                
+            if metodo == "newton_raphson_modificado":
+                r, delta, n_iter = newton_raphson_modificado(funcion[0], funcion[1], funcion[2], a_tol2, n_max)
+            
+            print('raiz = ' +str(r))
+            print('delta= ' +str(delta))
+            print('n_ite= ' +str(n_iter))
+            print('')
 
-print('----------------')
-print('Metodo secante')
-print('----------------')
-print('')
-print('Funcion f1, a_tol = '+str(a_tol1))
-r, delta, n_iter = secante(f1, a, b, a_tol1, n_max)
-print('raiz = ' +str(r))
-print('delta= ' +str(delta))
-print('n_ite= ' +str(n_iter))
-print('')
-print('Funcion f1, a_tol = '+str(a_tol2))
-r, delta, n_iter = secante(f1, a, b, a_tol2, n_max)
-print('raiz = ' +str(r))
-print('delta= ' +str(delta))
-print('n_ite= ' +str(n_iter))
-print('')
+        if metodo == "brent":
+            print('----------------')
+            print('Metodo brent')
+            print('----------------')
+            print('')
+            print('Funcion {}, a_tol por defecto para la funcion'.format(funcion_actual))
+            #https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brentq.html
+            r, results = brentq(funcion[0], a, b, full_output=True)
+            print('raiz = ' +str(r))
+            print('Resultados: ')
+            print(results)
 
-print('----------------')
-print('Metodo brent')
-print('----------------')
-print('')
-print('Funcion f1, a_tol por defecto para la funcion')
-#https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brentq.html
-r, results = brentq(f1, a, b, full_output=True)
-print('raiz = ' +str(r))
-print('Resultados: ')
-print(results)
 
-print(bisec(f1,a,b,a_tol2,n_max))
-print(secante(f1,a,b,a_tol2,n_max))
-print(newton_raphson(f1,df1,a_tol2,n_max))
-print(newton_raphson_modificado(f1,df1,ddf1,a_tol2,n_max))
+
