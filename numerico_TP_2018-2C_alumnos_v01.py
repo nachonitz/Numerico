@@ -105,19 +105,11 @@ def secante(f, x0, x1, a_tol, n_max):
     raise ValueError('No hubo convergencia')
     return x, delta, i+1
 
-def newton_raphson(f, df, a, b, a_tol, n_max):
+def newton_raphson(f, df, a_tol, n_max):
 
     delta = 0
-    x = a+(b-a)/2
+    x = 1.0
 
-    #Aca nose si hay que hacer biseccion antes de newton raphson, pero por las dudas lo hice
-    for i in range(3):
-        if f(a) * f(x) > 0:
-            a = x
-        else:
-            b = x
-        x_old = x
-        x = a+(b-a)/2
 
     print('{0:^4} {1:^17} {2:^17} {3:^17}'.format('i', 'x', 'x_-1', 'delta'))
     print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(0, x, 0, delta))
@@ -125,7 +117,7 @@ def newton_raphson(f, df, a, b, a_tol, n_max):
     for i in range(n_max):
         x_old = x
         x = x_old - f(x_old)/df(x_old)
-        delta =np.abs(x - x_old)
+        delta = np.abs(x - x_old)
 
         print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(i+1, x, x_old, delta))
 
@@ -135,6 +127,29 @@ def newton_raphson(f, df, a, b, a_tol, n_max):
 
     raise ValueError('No hubo convergencia')
     return x, delta, i+1
+
+def newton_raphson_modificado(f, df, ddf, a_tol, n_max):
+
+    delta = 0
+    x = 1.0
+
+    print('{0:^4} {1:^17} {2:^17} {3:^17}'.format('i', 'x', 'x_-1', 'delta'))
+    print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(0, x, 0, delta))
+
+    for i in range(n_max):
+        x_old = x
+        x = x_old - (f(x_old)*df(x_old))/(df(x_old)*df(x_old) - f(x_old)*ddf(x_old))
+        delta = np.abs(x - x_old)
+
+        print('{0:4} {1: .14f} {2: .14f} {3: .14f}'.format(i+1, x, x_old, delta))
+
+        if delta <= a_tol:
+            print('Hubo convergencia, n_iter = ' + str(i+1))
+            return x, delta, i+1
+
+    raise ValueError('No hubo convergencia')
+    return x, delta, i+1
+
 #Intervalo para buscar raiz
 a = 0.0
 b = 2.0
@@ -204,6 +219,7 @@ print('raiz = ' +str(r))
 print('Resultados: ')
 print(results)
 
-print(newton_raphson(f2,df2,a,b,a_tol2,n_max))
-print(bisec(f2,a,b,a_tol2,n_max))
-print(secante(f2,a,b,a_tol2,n_max))
+print(bisec(f1,a,b,a_tol2,n_max))
+print(secante(f1,a,b,a_tol2,n_max))
+print(newton_raphson(f1,df1,a_tol2,n_max))
+print(newton_raphson_modificado(f1,df1,ddf1,a_tol2,n_max))
