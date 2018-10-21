@@ -240,6 +240,3 @@ for funcion in funciones:
             print('raiz = ' +str(r))
             print('Resultados: ')
             print(results)
-
-
-
